@@ -52,10 +52,38 @@
 		<property name="message" value="Line has trailing spaces." />
 	</module>
 	<module name="RegexpMultiline">
-		<property name="severity" value="warning" />
+		<property name="severity" value="error" />
 		<property name="fileExtensions" value="java,xtend,scala,kt,xml,groovy,yaml,yml" />
 		<property name="format" value="(?s:(\r\n|\r).*)"/>
 		<property name="message" value="CRLF and CR line endings are prohibited, but this file uses them."/>
+	</module>
+	<module name="RegexpSingleline">
+		<property name="severity" value="error" />
+		<property name="format" value="Math\s*\.\s*random\s*\(\s*\)" />
+		<property name="fileExtensions" value="java,xtend,scala,kt" />
+		<property name="message"
+			value="Don't use Math.random() inside Alchemist. Breaks stuff." />
+	</module>
+	<module name="RegexpSingleline">
+		<property name="severity" value="error" />
+		<property name="format" value="class\s*\.\s*forName\s*\(" />
+		<property name="fileExtensions" value="java,xtend,scala,kt" />
+		<property name="message"
+			value="Use the library to load classes and resources. Breaks grid otherwise." />
+	</module>
+	<module name="RegexpSingleline">
+		<property name="severity" value="error" />
+		<property name="format" value="class\s*\.\s*getResource" />
+		<property name="fileExtensions" value="java,xtend,scala,kt" />
+		<property name="message"
+			value="Use the library to load classes and resources. Breaks grid otherwise." />
+	</module>
+	<module name="RegexpSingleline">
+		<property name="severity" value="error" />
+		<property name="format" value="class\s*\.\s*getClassLoader" />
+		<property name="fileExtensions" value="java,xtend,scala,kt" />
+		<property name="message"
+			value="Use the library to load classes and resources. Breaks grid otherwise." />
 	</module>
 	<module name="RegexpSingleline">
 		<property name="severity" value="warning" />
@@ -149,10 +177,6 @@
 		<module name="SimplifyBooleanExpression" />
 		<module name="SimplifyBooleanReturn" />
 
-		<!-- Checks for class design -->
-		<!-- See http://checkstyle.sf.net/config_design.html -->
-		<module name="DesignForExtension">
-		</module>
 		<module name="FinalClass">
             <property name="severity" value="warning" />
 		</module>

@@ -1,6 +1,10 @@
 package it.unibo.oop.lab.workers01;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.IntFunction;
+import java.util.function.IntUnaryOperator;
+import java.util.function.ToLongFunction;
 import java.util.stream.IntStream;
 
 /**
@@ -68,15 +72,41 @@ public final class MultiThreadedListSumWithStreams implements SumList {
         /*
          * Build a stream of workers
          */
-        return IntStream.iterate(0, start -> start + size)
+        return IntStream
+                .iterate(0, new IntUnaryOperator() {
+                    @Override
+                    public int applyAsInt(int start) {
+                        return start + size;
+                    }
+                })
                 .limit(nthread)
-                .mapToObj(start -> new Worker(list, start, size))
+                .mapToObj(new IntFunction<Worker>() {
+                    @Override
+                    public Worker apply(int start) {
+                        return new Worker(list, start, size);
+                    }
+                })
                 // Start them
-                .peek(Thread::start)
+                .peek(new Consumer<Worker>() {
+                    @Override
+                    public void accept(Worker worker) {
+                        worker.start();
+                    }
+                })
                 // Join them
-                .peek(MultiThreadedListSumWithStreams::joinUninterruptibly)
+                .peek(new Consumer<Worker>() {
+                    @Override
+                    public void accept(Worker target) {
+                        joinUninterruptibly(target);
+                    }
+                })
                  // Get their result and sum
-                .mapToLong(Worker::getResult)
+                .mapToLong(new ToLongFunction<Worker>() {
+                    @Override
+                    public long applyAsLong(Worker worker) {
+                        return worker.getResult();
+                    }
+                })
                 .sum();
     }
 

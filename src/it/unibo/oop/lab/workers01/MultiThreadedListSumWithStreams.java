@@ -1,10 +1,6 @@
 package it.unibo.oop.lab.workers01;
 
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.IntFunction;
-import java.util.function.IntUnaryOperator;
-import java.util.function.ToLongFunction;
 import java.util.stream.IntStream;
 
 /**

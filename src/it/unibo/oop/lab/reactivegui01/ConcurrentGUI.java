@@ -94,6 +94,13 @@ public final class ConcurrentGUI extends JFrame {
                             ConcurrentGUI.this.display.setText(Integer.toString(Agent.this.counter));
                         }
                     });
+                    /*
+                     * SpotBugs shows a warning because the increment of a volatile variable is not atomic,
+                     * so the concurrent access is potentially not safe.
+                     * In the specific case of this exercise, we do synchronization with invokeAndWait, so
+                     * it can be ignored.
+                     * Don't ignore warnings in the final project!
+                     */
                     this.counter++;
                     Thread.sleep(100);
                 } catch (InvocationTargetException | InterruptedException ex) {

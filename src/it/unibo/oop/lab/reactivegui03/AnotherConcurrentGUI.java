@@ -46,19 +46,19 @@ public final class AnotherConcurrentGUI extends JFrame {
         this.setVisible(true);
         up.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 counterAgent.upCounting();
             }
         });
         down.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 counterAgent.downCounting();
             }
         });
         stop.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 AnotherConcurrentGUI.this.stopCounting();
             }
         });

@@ -43,19 +43,19 @@ public final class ConcurrentGUI extends JFrame {
         final Agent agent = new Agent();
         up.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 agent.countUp();
             }
         });
         down.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 agent.countDown();
             }
         });
         stop.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 agent.stopCounting();
                 stop.setEnabled(false);
                 up.setEnabled(false);

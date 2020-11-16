@@ -1,14 +1,12 @@
 package it.unibo.oop.lab.workers01;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 import java.util.List;
-import java.util.function.IntUnaryOperator;
-import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 /**
  * 
@@ -33,23 +31,13 @@ public class TestListSumWithStreams {
     @Test
     public void testBasic() {
         final List<Integer> list = IntStream
-                .iterate(0, new IntUnaryOperator() {
-                    @Override
-                    public int applyAsInt(int i) {
-                        return i + 1;
-                    }
-                })
+                .iterate(0, i -> i + 1)
                 .limit(SIZE)
                 .boxed()
                 .collect(Collectors.toList());
         final long sum = list
                 .stream()
-                .mapToLong(new ToLongFunction<Integer>() {
-                    @Override
-                    public long applyAsLong(Integer integer) {
-                        return integer.longValue();
-                    }
-                })
+                .mapToLong(Integer::longValue)
                 .sum();
         System.out.println("BTW: the sum with " + SIZE + " elements is: " + sum);
         /*

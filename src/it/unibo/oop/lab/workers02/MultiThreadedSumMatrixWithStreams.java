@@ -1,7 +1,5 @@
 package it.unibo.oop.lab.workers02;
 
-import java.util.function.IntToDoubleFunction;
-import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
 
 /**
@@ -37,29 +35,21 @@ public class MultiThreadedSumMatrixWithStreams implements SumMatrix {
          * Parallel pipeline processing
          */
         return IntStream
-                .iterate(0, new IntUnaryOperator() {
-                    @Override
-                    public int applyAsInt(int start) {
-                        return start + size;
-                    }
-                })
+                .iterate(0, start -> start + size)
                 .limit(nthread)
                 /*
                  * We do not create thread ourselves. We decide how tasks should be done, and we
                  * ask the Stream library to spawn the required threads.
                  */
                 .parallel()
-                .mapToDouble(new IntToDoubleFunction() {
-                    @Override
-                    public double applyAsDouble(int start) {
-                        double result = 0;
-                        for (int i = start; i < matrix.length && i < start + size; i++) {
-                            for (final double d : matrix[i]) {
-                                result += d;
-                            }
+                .mapToDouble(start -> {
+                    double result = 0;
+                    for (int i = start; i < matrix.length && i < start + size; i++) {
+                        for (final double d : matrix[i]) {
+                            result += d;
                         }
-                        return result;
                     }
+                    return result;
                 })
                 .sum();
     }

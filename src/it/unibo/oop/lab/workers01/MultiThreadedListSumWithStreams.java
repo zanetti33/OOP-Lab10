@@ -73,40 +73,15 @@ public final class MultiThreadedListSumWithStreams implements SumList {
          * Build a stream of workers
          */
         return IntStream
-                .iterate(0, new IntUnaryOperator() {
-                    @Override
-                    public int applyAsInt(int start) {
-                        return start + size;
-                    }
-                })
+                .iterate(0, start -> start + size)
                 .limit(nthread)
-                .mapToObj(new IntFunction<Worker>() {
-                    @Override
-                    public Worker apply(int start) {
-                        return new Worker(list, start, size);
-                    }
-                })
+                .mapToObj(start -> new Worker(list, start, size))
                 // Start them
-                .peek(new Consumer<Worker>() {
-                    @Override
-                    public void accept(Worker worker) {
-                        worker.start();
-                    }
-                })
+                .peek(Thread::start)
                 // Join them
-                .peek(new Consumer<Worker>() {
-                    @Override
-                    public void accept(Worker target) {
-                        joinUninterruptibly(target);
-                    }
-                })
+                .peek(MultiThreadedListSumWithStreams::joinUninterruptibly)
                  // Get their result and sum
-                .mapToLong(new ToLongFunction<Worker>() {
-                    @Override
-                    public long applyAsLong(Worker worker) {
-                        return worker.getResult();
-                    }
-                })
+                .mapToLong(Worker::getResult)
                 .sum();
     }
 

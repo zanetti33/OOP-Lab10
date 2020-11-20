@@ -2,8 +2,9 @@ package it.unibo.oop.lab.workers01;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.junit.Test;
 
@@ -12,7 +13,7 @@ import org.junit.Test;
  * TestMatrix for worker 1.
  *
  */
-public class TestListSumClassic {
+public class TestListSumWithStreams {
 
     /**
      * SumList and its multithreaded implementation are given as reference
@@ -29,24 +30,23 @@ public class TestListSumClassic {
      */
     @Test
     public void testBasic() {
-        /*
-         * Initialize a list
-         */
-        final List<Integer> list = new ArrayList<>(SIZE);
-        long sum = 0;
-        for (int i = 0; i < SIZE; i++) {
-            list.add(i);
-            sum += i;
-        }
+        final List<Integer> list = IntStream
+                .iterate(0, i -> i + 1)
+                .limit(SIZE)
+                .boxed()
+                .collect(Collectors.toList());
+        final long sum = list.stream()
+                .mapToLong(Integer::longValue)
+                .sum();
         System.out.println("BTW: the sum with " + SIZE + " elements is: " + sum);
         /*
          * Prepare time ant test with different number of threads
          */
         long time;
         for (final int threads: new int[] { 1, 2, 3, 8, 16, 32 }) {
-            final SumList sumList = new MultiThreadedListSumClassic(threads);
+            final SumList sumList = new MultiThreadedListSumWithStreams(threads);
             time = System.currentTimeMillis();
-            assertEquals(sum, sumList.sum(list));
+            assertEquals(sumList.sum(list), sum);
             System.out.println("Tried with " + threads + " thread: "
                     + (System.currentTimeMillis() - time) + MSEC);
         }

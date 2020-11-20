@@ -83,19 +83,16 @@ public class MultiThreadedSumMatrixWithFutures implements SumMatrix {
          */
         final var executor = ForkJoinPool.commonPool();
         final Collection<Future<Double>> futureResults = new ArrayList<>(nthread);
-        final var futureFinalResult = executor.submit(new Callable<Double>() {
-            @Override
-            public Double call() throws Exception {
-                for (int start = 0; start < matrix.length; start += size) {
-                    futureResults.add(executor.submit(new Worker(matrix, start, size)));
-                }
-                double sum = 0;
-                for (final Future<Double> result : futureResults) {
-                    sum += result.get();
-                }
-                executor.shutdown();
-                return sum;
+        final var futureFinalResult = executor.submit(() -> {
+            for (int start = 0; start < matrix.length; start += size) {
+                futureResults.add(executor.submit(new Worker(matrix, start, size)));
             }
+            double sum = 0;
+            for (final Future<Double> result: futureResults) {
+                sum += result.get();
+            }
+            executor.shutdown();
+            return sum;
         });
         try {
             return futureFinalResult.get();

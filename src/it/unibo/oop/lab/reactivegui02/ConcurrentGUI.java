@@ -2,8 +2,6 @@ package it.unibo.oop.lab.reactivegui02;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -41,26 +39,13 @@ public final class ConcurrentGUI extends JFrame {
         this.getContentPane().add(panel);
         this.setVisible(true);
         final Agent agent = new Agent();
-        up.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                agent.countUp();
-            }
-        });
-        down.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                agent.countDown();
-            }
-        });
-        stop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                agent.stopCounting();
-                stop.setEnabled(false);
-                up.setEnabled(false);
-                down.setEnabled(false);
-            }
+        up.addActionListener(e -> agent.countUp());
+        down.addActionListener(e -> agent.countDown());
+        stop.addActionListener(e -> {
+            agent.stopCounting();
+            stop.setEnabled(false);
+            up.setEnabled(false);
+            down.setEnabled(false);
         });
         new Thread(agent).start();
     }
@@ -83,14 +68,7 @@ public final class ConcurrentGUI extends JFrame {
                      * immediately and does not overload EDT
                      */
                     final var todisplay = Integer.toString(counter);
-                    SwingUtilities
-                        .invokeLater(new Runnable() {
-                           @Override
-                           public void run() {
-                               display.setText(todisplay);
-                           }
-                       }
-                    );
+                    SwingUtilities.invokeLater(() -> display.setText(todisplay));
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();

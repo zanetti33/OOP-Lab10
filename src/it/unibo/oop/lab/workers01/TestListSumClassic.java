@@ -47,7 +47,8 @@ public class TestListSumClassic {
             final SumList sumList = new MultiThreadedListSumClassic(threads);
             time = System.currentTimeMillis();
             assertEquals(sum, sumList.sum(list));
-            System.out.println("Tried with " + threads + " thread: " + (System.currentTimeMillis() - time) + MSEC);
+            System.out.println("Tried with " + threads + " thread: "
+                    + (System.currentTimeMillis() - time) + MSEC);
         }
     }
 

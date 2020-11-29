@@ -15,7 +15,7 @@ public class TestMatrix {
 
     /*
      * Si fornisce l'interfaccia SumMatrix, con un metodo per calcolare la
-     * somma delgi elementi di una matrice.
+     * somma degli elementi di una matrice.
      * 
      * Realizzare una classe MultiThreadedSumMatrix, con costrutto che accetta
      * un intero positivo 'n', che implementa tale funzionalità in modo

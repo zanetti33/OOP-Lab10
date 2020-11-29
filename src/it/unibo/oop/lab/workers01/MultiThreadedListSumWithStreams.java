@@ -52,7 +52,7 @@ public final class MultiThreadedListSumWithStreams implements SumList {
         }
 
         /**
-         * Returns the risult of summing up the integers within the list.
+         * Returns the result of summing up the integers within the list.
          * 
          * @return the sum of every element in the array
          */
